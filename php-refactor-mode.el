@@ -25,7 +25,7 @@
   :type 'symbol)
 
 (defcustom php-refactor-keymap-prefix (kbd "C-c r")
-  "php-refactor keymap prefix."
+  "The php-refactor keymap prefix."
   :group 'php-refactor
   :type 'string)
 
@@ -49,12 +49,16 @@
   (interactive)
   (php-refactor--run-command
    "convert-local-to-instance-variable"
-   (list (buffer-file-name) (number-to-string (locate-current-line-number)) (concat "'" (word-at-point) "'"))))
+   (buffer-file-name)
+   (number-to-string (locate-current-line-number))
+   (word-at-point)))
 
 (defun php-refactor--optimize-use ()
   "Optimizes the use of Fully qualified names in a file."
   (interactive)
-  (php-refactor--run-command "optimize-use" (list (buffer-file-name))))
+  (php-refactor--run-command
+   "optimize-use"
+   (buffer-file-name)))
 
 (defun php-refactor--extract-method (begin end)
   "Extract the selected region into a separate method.
@@ -66,29 +70,57 @@ END is the ending position of the selected region."
         (region-end (number-to-string (line-number-at-pos end))))
     (php-refactor--run-command
      "extract-method"
-     (list (buffer-file-name) (concat region-start "-" region-end) "newMethomdName"))))
+     (buffer-file-name)
+     (concat region-start "-" region-end)
+     "newMethodName")))
 
 (defun php-refactor--rename-local-variable ()
   "Rename an existing local variable to the specified new name."
   (interactive)
   (php-refactor--run-command
    "rename-local-variable"
-   (list (buffer-file-name) (number-to-string (locate-current-line-number)) (concat "'" (word-at-point) "'") "renamed")))
+   (buffer-file-name)
+   (number-to-string (locate-current-line-number))
+   (word-at-point)
+   "renamed"))
 
-(defun php-refactor--run-command (method args)
+(defun php-refactor--run-command (&rest args)
   "Execute the given refactoring command and apply the resulting patch.
 
-METHOD specifies the refactoring method to run.
-ARGS contains a list of flags required for the specific method to run."
+ARGS contains a list of all the arguments required for the specific method to run."
 
   ;; TODO We need to make sure the file is saved first.  Otherwise, we can't do this.
   (shell-command
-   (mapconcat 'identity
-              (list php-refactor-command method
-                    (mapconcat 'identity args " ") "| tee ~/patch |" php-refactor-patch-command) " ")
-   nil)
+   (php-refactor--generate-command args))
   (revert-buffer nil t))
+
+(defun php-refactor--generate-command (args)
+  "Build the appropriate command to perform the refactoring.
+
+ARGS contains a list of all the arguments required to generate a refactoring."
+  (php-refactor--append-patch-command
+   (php-refactor--generate-refactor-command args)))
+
+(defun php-refactor--generate-refactor-command (args)
+  "Build the portion of the command required to perform the refactoring.
+
+ARGS contains a list of all the arguments required to generate a refactoring."
+  (let* ((refactor-command-list (cons php-refactor-command args))
+         (refactor-command-args (php-refactor--quote-arg-list refactor-command-list)))
+    (mapconcat 'identity refactor-command-args " ")))
+
+(defun php-refactor--quote-arg-list (args)
+  "Run all arguments through 'shell-quote-argument'.
+
+ARGS a list of individual command arguments to protect."
+  (mapcar 'shell-quote-argument args))
+
+(defun php-refactor--append-patch-command (refactor-command)
+  "Build the command to pipe the refactor command into patch.
+
+REFACTOR-COMMAND The 'shell-command' portion to execute a refactoring."
+  (concat refactor-command " | " php-refactor-patch-command))
 
 (provide 'php-refactor-mode)
 
-;;; emacs-php-refactor ends here
+;;; php-refactor-mode.el ends here

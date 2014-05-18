@@ -29,7 +29,7 @@ Feature: PHP Refactor
     """
     <?php
 
-    class ConvertLocalToInstanceVariable
+    class RenameLocalVariable
     {
         public function internalMethod()
         {
@@ -53,7 +53,7 @@ Feature: PHP Refactor
     """
     <?php
 
-    class ConvertLocalToInstanceVariable
+    class ExtractAMethod
     {
         public function internalMethod()
         {
@@ -74,16 +74,16 @@ Feature: PHP Refactor
     """
     <?php
 
-    class ConvertLocalToInstanceVariable
+    class ExtractAMethod
     {
         public function internalMethod()
         {
-            $localVariable = $this->newMethomdName();
+            $localVariable = $this->newMethodName();
 
             echo $localVariable;
         }
 
-        private function newMethomdName()
+        private function newMethodName()
         {
             $localVariable = "Hello";
             $localVariable += " World";
