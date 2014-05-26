@@ -23,5 +23,5 @@ Feature: Rename Local Variable
     And I press "C-c r rv"
     And I type "renamedVariable"
     And I execute the action chain
-    And I should not see "$localVariable"
+    Then I should not see "$localVariable"
     And I should see "$renamedVariable"
