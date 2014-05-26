@@ -71,7 +71,7 @@
   "Keymap for php-refactor mode.")
 
 (define-minor-mode php-refactor-mode
-  "Minor more to quickly and safely perform common refactorings."
+  "Minor mode to quickly and safely perform common refactorings."
   nil " Refactor" php-refactor-mode-map)
 
 (defun php-refactor--convert-local-to-instance-variable ()
@@ -80,7 +80,7 @@
   (php-refactor--run-command
    "convert-local-to-instance-variable"
    (buffer-file-name)
-   (number-to-string (locate-current-line-number))
+   (php-refactor--get-effective-line-number-as-string)
    (thing-at-point 'symbol)))
 
 (defun php-refactor--optimize-use ()
@@ -112,9 +112,15 @@ END is the ending position of the selected region."
     (php-refactor--run-command
      "rename-local-variable"
      (buffer-file-name)
-     (number-to-string (locate-current-line-number))
+     (php-refactor--get-effective-line-number-as-string)
      (thing-at-point 'symbol)
      renamed)))
+
+(defun php-refactor--get-effective-line-number-as-string ()
+  "Retrieve the current line number as a string, accounting for narrowing."
+  (save-restriction
+    (widen)
+    (number-to-string (locate-current-line-number))))
 
 (defun php-refactor--run-command (&rest args)
   "Execute the given refactoring command and apply the resulting patch.
