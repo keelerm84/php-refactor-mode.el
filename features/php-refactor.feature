@@ -42,9 +42,12 @@ Feature: PHP Refactor
     And I save the buffer
     And I turn on php-refactor-mode
     And I go to word "$localVariable"
+    And I start an action chain
     And I press "C-c r rv"
-    Then I should see "$renamed"
+    And I type "renamedVariable"
+    And I execute the action chain
     And I should not see "$localVariable"
+    And I should see "$renamedVariable"
 
 
   Scenario: Extract a Method
@@ -69,7 +72,10 @@ Feature: PHP Refactor
     And I go to word "$localVariable"
     And I set the mark
     And I go to word "World"
+    And I start an action chain
     And I press "C-c r em"
+    And I type "extractedMethodName"
+    And I execute the action chain
     Then I should see:
     """
     <?php
@@ -78,12 +84,12 @@ Feature: PHP Refactor
     {
         public function internalMethod()
         {
-            $localVariable = $this->newMethodName();
+            $localVariable = $this->extractedMethodName();
 
             echo $localVariable;
         }
 
-        private function newMethodName()
+        private function extractedMethodName()
         {
             $localVariable = "Hello";
             $localVariable += " World";

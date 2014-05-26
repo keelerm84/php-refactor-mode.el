@@ -51,7 +51,7 @@
    "convert-local-to-instance-variable"
    (buffer-file-name)
    (number-to-string (locate-current-line-number))
-   (word-at-point)))
+   (thing-at-point 'symbol)))
 
 (defun php-refactor--optimize-use ()
   "Optimizes the use of Fully qualified names in a file."
@@ -67,22 +67,24 @@ BEGIN is the starting position of the selected region.
 END is the ending position of the selected region."
   (interactive "r")
   (let ((region-start (number-to-string (line-number-at-pos begin)))
-        (region-end (number-to-string (line-number-at-pos end))))
+        (region-end (number-to-string (line-number-at-pos end)))
+        (method (read-from-minibuffer "Specify new method name: ")))
     (php-refactor--run-command
      "extract-method"
      (buffer-file-name)
      (concat region-start "-" region-end)
-     "newMethodName")))
+     method)))
 
 (defun php-refactor--rename-local-variable ()
   "Rename an existing local variable to the specified new name."
   (interactive)
-  (php-refactor--run-command
-   "rename-local-variable"
-   (buffer-file-name)
-   (number-to-string (locate-current-line-number))
-   (word-at-point)
-   "renamed"))
+  (let ((renamed (read-from-minibuffer "Specify new variable name: ")))
+    (php-refactor--run-command
+     "rename-local-variable"
+     (buffer-file-name)
+     (number-to-string (locate-current-line-number))
+     (thing-at-point 'symbol)
+     renamed)))
 
 (defun php-refactor--run-command (&rest args)
   "Execute the given refactoring command and apply the resulting patch.
@@ -92,7 +94,7 @@ ARGS contains a list of all the arguments required for the specific method to ru
   ;; TODO We need to make sure the file is saved first.  Otherwise, we can't do this.
   (shell-command
    (php-refactor--generate-command args))
-  (revert-buffer nil t))
+  (revert-buffer nil t t))
 
 (defun php-refactor--generate-command (args)
   "Build the appropriate command to perform the refactoring.
