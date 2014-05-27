@@ -1,4 +1,4 @@
-;;; php-refactor-mode.el -- Minor mode to quickly and safely perform common refactorings -*- lexical-binding: t -*-
+;;; php-refactor-mode.el --- Minor mode to quickly and safely perform common refactorings -*- lexical-binding: t -*-
 
 ;; Copyright © 2014 Matthew M. Keeler <keelerm84@gmail.com>
 
@@ -70,6 +70,7 @@
     map)
   "Keymap for php-refactor mode.")
 
+;;;###autoload
 (define-minor-mode php-refactor-mode
   "Minor mode to quickly and safely perform common refactorings."
   nil " Refactor" php-refactor-mode-map)
