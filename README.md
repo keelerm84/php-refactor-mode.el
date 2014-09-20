@@ -9,7 +9,7 @@ methods provided by
 You must require the minor-mode and then enable it.
 
     (require 'php-refactor-mode)
-    (php-refactor-mode)
+    (add-hook 'php-mode-hook 'php-refactor-mode)
 
 Options either operate on the symbol at point, the selected region, or the file
 as a whole.  Each operation can be triggered through the use of a particular
@@ -38,6 +38,6 @@ Run the tests with:
     $ ./run-tests.sh
 
 Or alternatively, if you have [watchr](https://github.com/mynyml/watchr)
-installed, you can run continuously run the tests with:
+installed, you can continuously run the tests with:
 
     $ watchr watch-tests.watchr

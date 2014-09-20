@@ -1,4 +1,4 @@
-;;; php-refactor-mode.el --- Minor mode to quickly and safely perform common refactorings -*- lexical-binding: t -*-
+;;; php-refactor-mode.el --- Minor mode to quickly and safely perform common refactorings
 
 ;; Copyright © 2014 Matthew M. Keeler <keelerm84@gmail.com>
 
