@@ -35,7 +35,7 @@ To fetch the test dependencies, install
 
 Run the tests with:
 
-    $ cask exec ecukes
+    $ ./run-tests.sh
 
 Or alternatively, if you have [watchr](https://github.com/mynyml/watchr)
 installed, you can run continuously run the tests with:

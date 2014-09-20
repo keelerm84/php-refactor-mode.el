@@ -7,13 +7,13 @@ end
 
 def run_all_tests
   system('clear')
-  result = run "cask exec ecukes"
+  result = run "./run-tests.sh"
   puts result
 end
 
 def run_test(file)
   system('clear')
-  result = run "cask exec ecukes #{file}"
+  result = run "./run-tests.sh #{file}"
   puts result
 end
 
