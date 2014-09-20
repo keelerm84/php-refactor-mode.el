@@ -17,7 +17,6 @@ Feature: Extract a Method
         }
     }
     """
-    And I save the buffer
     And I turn on php-refactor-mode
     And I go to word "$localVariable"
     And I set the mark
@@ -45,6 +44,48 @@ Feature: Extract a Method
             $localVariable += " World";
 
             return $localVariable;
+        }
+    }
+    """
+
+  Scenario: Extracting a method is an undoable operation
+    When I open temp file "extract-a-method"
+    And I insert:
+    """
+    <?php
+
+    class ExtractAMethod
+    {
+        public function internalMethod()
+        {
+            $localVariable = "Hello";
+            $localVariable += " World";
+
+            echo $localVariable;
+        }
+    }
+    """
+    And I turn on php-refactor-mode
+    And I go to word "$localVariable"
+    And I set the mark
+    And I go to word "World"
+    And I start an action chain
+    And I press "C-c r em"
+    And I type "extractedMethodName"
+    And I execute the action chain
+    And I press "C-_"
+    Then I should see:
+    """
+    <?php
+
+    class ExtractAMethod
+    {
+        public function internalMethod()
+        {
+            $localVariable = "Hello";
+            $localVariable += " World";
+
+            echo $localVariable;
         }
     }
     """

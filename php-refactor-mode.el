@@ -36,9 +36,6 @@
 (require 'thingatpt)
 (require 'locate)
 
-;; (defvar php-refactor-command "refactor.phar")
-;; (defvar php-refactor-patch-command "patch -p1")
-
 (defgroup php-refactor nil
   "Quickly and safely perform common refactorings."
   :group 'tools
@@ -128,10 +125,13 @@ END is the ending position of the selected region."
 
 ARGS contains a list of all the arguments required for the specific method to run."
 
-  ;; TODO We need to make sure the file is saved first.  Otherwise, we can't do this.
-  (shell-command
-   (php-refactor--generate-command args))
-  (revert-buffer nil t t))
+  (save-buffer)
+  (let ((revert-buffer-function 'php-refactor--revert-buffer-keep-history)
+        (temp-point (point)))
+    (shell-command
+     (php-refactor--generate-command args))
+    (revert-buffer nil t t)
+    (goto-char temp-point)))
 
 (defun php-refactor--generate-command (args)
   "Build the appropriate command to perform the refactoring.
@@ -159,6 +159,21 @@ ARGS a list of individual command arguments to protect."
 
 REFACTOR-COMMAND The 'shell-command' portion to execute a refactoring."
   (concat refactor-command " | " php-refactor-patch-command))
+
+;;; revert-buffer won't save any undo history, so we're using this awesome work around
+;;; http://stackoverflow.com/a/12304982/859409
+(defun php-refactor--revert-buffer-keep-history (&optional IGNORE-AUTO NOCONFIRM PRESERVE-MODES)
+  ;; tell Emacs the modtime is fine, so we can edit the buffer
+  (clear-visited-file-modtime)
+
+  ;; insert the current contents of the file on disk
+  (widen)
+  (delete-region (point-min) (point-max))
+  (insert-file-contents (buffer-file-name))
+
+  ;; mark the buffer as not modified
+  (not-modified)
+  (set-visited-file-modtime))
 
 (provide 'php-refactor-mode)
 
