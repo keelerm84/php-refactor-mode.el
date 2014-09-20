@@ -162,7 +162,8 @@ REFACTOR-COMMAND The 'shell-command' portion to execute a refactoring."
 
 ;;; revert-buffer won't save any undo history, so we're using this awesome work around
 ;;; http://stackoverflow.com/a/12304982/859409
-(defun php-refactor--revert-buffer-keep-history (&optional IGNORE-AUTO NOCONFIRM PRESERVE-MODES)
+(defun php-refactor--revert-buffer-keep-history (&optional _IGNORE-AUTO _NOCONFIRM _PRESERVE-MODES)
+  "Revert the buffer contents while perserving the undo tree."
   ;; tell Emacs the modtime is fine, so we can edit the buffer
   (clear-visited-file-modtime)
 
