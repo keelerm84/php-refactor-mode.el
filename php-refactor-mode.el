@@ -46,7 +46,7 @@
   :group 'php-refactor
   :type 'symbol)
 
-(defcustom php-refactor-patch-command "patch -p1"
+(defcustom php-refactor-patch-command "patch -p1 --no-backup-if-mismatch"
   "Define the command used for applying the patch."
   :group 'php-refactor
   :type 'symbol)
