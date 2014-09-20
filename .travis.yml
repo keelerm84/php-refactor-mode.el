@@ -1,0 +1,27 @@
+language: emacs-lisp
+before_install:
+  - if [ "$EMACS" = 'emacs-snapshot' ]; then
+      sudo add-apt-repository -y ppa:cassou/emacs &&
+      sudo apt-get update -qq &&
+      sudo apt-get install -qq
+          emacs-snapshot-el emacs-snapshot-gtk emacs-snapshot;
+    fi
+  - if [ "$EMACS" = 'emacs24' ]; then
+      sudo add-apt-repository -y ppa:cassou/emacs &&
+      sudo apt-get update -qq &&
+      sudo apt-get install -qq
+          emacs24 emacs24-el emacs24-common-non-dfsg;
+    fi
+  - sudo apt-get install -qq patch
+  - sudo add-apt-repository -y ppa:ondrej/php5
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq php5
+  - wget https://github.com/QafooLabs/php-refactoring-browser/releases/download/v0.0.4/refactor.phar
+  - chmod +x refactor.phar
+  - curl -fsSkL https://raw.github.com/cask/cask/master/go | python
+  - export PATH="/home/travis/build/keelerm84/php-refactor-mode.el/:/home/travis/.cask/bin:$PATH"
+  - cask
+env:
+  - EMACS=emacs24 TAGS=""
+script:
+  ./run-travis-ci.sh

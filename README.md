@@ -1,4 +1,4 @@
-# php-refactor-mode
+# php-refactor-mode [![Build Status](https://secure.travis-ci.org/keelerm84/php-refactor-mode.el.png)](http://travis-ci.org/keelerm84/php-refactor-mode.el)
 
 This is a minor mode which provides convenient access to the refactoring
 methods provided by
