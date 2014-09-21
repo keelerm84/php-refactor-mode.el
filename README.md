@@ -4,6 +4,21 @@ This is a minor mode which provides convenient access to the refactoring
 methods provided by
 [php-refactoring-browser](https://github.com/QafooLabs/php-refactoring-browser).
 
+## Installation
+
+The recommended way to install php-refactor-mode is through package.el.
+php-refactor-mode is available for installation through
+[melpa](http://melpa.milkbox.net/).
+
+Ensure that package-archives as been configured for melpa
+
+    (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+
+Then install with
+
+    M-x package-refresh-contents
+    M-x package-install php-refactor-mode
+
 ## Usage
 
 You must require the minor-mode and then enable it.
