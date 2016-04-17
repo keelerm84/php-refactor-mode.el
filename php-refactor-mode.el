@@ -128,6 +128,7 @@ ARGS contains a list of all the arguments required for the specific method to ru
   (save-buffer)
   (let ((revert-buffer-function 'php-refactor--revert-buffer-keep-history)
         (temp-point (point)))
+    (setq buffer-undo-list (cons temp-point buffer-undo-list))
     (shell-command
      (php-refactor--generate-command args))
     (revert-buffer nil t t)
