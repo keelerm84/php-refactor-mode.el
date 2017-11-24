@@ -79,7 +79,7 @@
    "convert-local-to-instance-variable"
    (buffer-file-name)
    (php-refactor--get-effective-line-number-as-string)
-   (thing-at-point 'symbol)))
+   (thing-at-point 'sexp)))
 
 (defun php-refactor--optimize-use ()
   "Optimizes the use of Fully qualified names in a file."
@@ -111,7 +111,7 @@ END is the ending position of the selected region."
      "rename-local-variable"
      (buffer-file-name)
      (php-refactor--get-effective-line-number-as-string)
-     (thing-at-point 'symbol)
+     (thing-at-point 'sexp)
      renamed)))
 
 (defun php-refactor--get-effective-line-number-as-string ()

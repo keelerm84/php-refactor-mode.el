@@ -18,6 +18,7 @@ Feature: Optimize Use
         }
     }
     """
+    And I turn on php-mode
     And I turn on php-refactor-mode
     And I press "C-c r ou"
     Then I should see "use Top\Level\Domain\Name"
@@ -42,6 +43,7 @@ Feature: Optimize Use
         }
     }
     """
+    And I turn on php-mode
     And I turn on php-refactor-mode
     And I press "C-c r ou"
     And I press "C-_"

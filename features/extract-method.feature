@@ -17,8 +17,9 @@ Feature: Extract a Method
         }
     }
     """
+    And I turn on php-mode
     And I turn on php-refactor-mode
-    And I go to word "$localVariable"
+    And I place the cursor before "$localVariable"
     And I set the mark
     And I go to word "World"
     And I start an action chain
@@ -65,8 +66,9 @@ Feature: Extract a Method
         }
     }
     """
+    And I turn on php-mode
     And I turn on php-refactor-mode
-    And I go to word "$localVariable"
+    And I place the cursor before "$localVariable"
     And I set the mark
     And I go to word "World"
     And I start an action chain

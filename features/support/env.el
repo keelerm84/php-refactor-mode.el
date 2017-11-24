@@ -5,6 +5,7 @@
 
 (add-to-list 'load-path php-refactor-root-path)
 
+(require 'php-mode)
 (require 'php-refactor-mode)
 (require 'espuds)
 (require 'ert)
